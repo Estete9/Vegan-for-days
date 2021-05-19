@@ -5,6 +5,9 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -17,12 +20,17 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "EDAMAM_API_KEY",localProperties['VEGAN4DAYS_APP_KEY']
     }
 
     buildTypes {
+//        debug {
+//            buildConfigField 'String', "ApiKey", VEGAN4DAYS_APP_KEY
+//        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            buildConfigField 'String', "ApiKey", VEGAN4DAYS_APP_KEY
         }
     }
     compileOptions {
@@ -58,8 +66,8 @@ dependencies {
 //    Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-//    okhttp3 interceptor
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+//    okhttp3 logging-interceptor
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
 //    nav view controllers
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
