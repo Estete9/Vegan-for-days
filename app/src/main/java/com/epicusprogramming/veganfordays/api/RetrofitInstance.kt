@@ -13,7 +13,7 @@ class RetrofitInstance {
             val client = OkHttpClient.Builder().addInterceptor(logging).build()
 
             Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL_COMPLEX)
+                .baseUrl(Constants.SPOONACULAR_BASE_URL_COMPLEX)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

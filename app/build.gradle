@@ -21,7 +21,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "SPOONACULAR_API_KEY", localProperties['VEGAN4DAYS_APP_KEY']
+        buildConfigField "String", "SPOONACULAR_API_KEY", localProperties['VEGAN4DAYS_APP_KEY_SPOONACULAR']
+        buildConfigField "String", "EDAMAM_API_KEY", localProperties['VEGAN4DAYS_APP_KEY_EDAMAM']
 
         javaCompileOptions {
             annotationProcessorOptions {

@@ -1,7 +1,7 @@
 package com.epicusprogramming.veganfordays.api
 
 import com.epicusprogramming.veganfordays.models.SearchRecipeResponse
-import com.epicusprogramming.veganfordays.util.Constants.Companion.APP_KEY
+import com.epicusprogramming.veganfordays.util.Constants.Companion.SPOONACULAR_APP_KEY
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -32,6 +32,6 @@ interface SearchByRecipeApi {
         @Query("sort")
         sort: String = "",
         @Query("apiKey")
-        apiKey: String = APP_KEY
+        apiKey: String = SPOONACULAR_APP_KEY
     ): Response<SearchRecipeResponse>
 }
