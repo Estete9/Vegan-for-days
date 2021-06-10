@@ -13,13 +13,13 @@ class RetrofitInstance {
             val client = OkHttpClient.Builder().addInterceptor(logging).build()
 
             Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
+                .baseUrl(Constants.BASE_URL_COMPLEX)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
         val api by lazy {
-            retrofit.create(searchByRecipeApi::class.java)
+            retrofit.create(SearchByRecipeApi::class.java)
         }
     }
 }

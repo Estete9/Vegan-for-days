@@ -3,11 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recipes_nav_graph"
-    app:startDestination="@id/searchByRecipeFragment">
+    app:startDestination="@id/searchRecipeFragment">
 
     <fragment
-        android:id="@+id/searchByRecipeFragment"
-        android:name="com.epicusprogramming.veganfordays.ui.fragments.SearchByRecipeFragment"
-        android:label="fragment_search_by_recipe"
-        tools:layout="@layout/fragment_search_by_recipe" />
+        android:id="@+id/searchRecipeFragment"
+        android:name="com.epicusprogramming.veganfordays.ui.fragments.SearchRecipeFragment"
+        android:label="fragment_search_recipe"
+        tools:layout="@layout/fragment_search_recipe" >
+        <action
+            android:id="@+id/action_searchRecipeFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipeFragment"
+        android:name="com.epicusprogramming.veganfordays.ui.fragments.RecipeFragment"
+        android:label="fragment_recipe"
+        tools:layout="@layout/fragment_recipe" >
+        <argument
+            android:name="recipe"
+            app:argType="com.epicusprogramming.veganfordays.models.Recipe" />
+    </fragment>
 </navigation>

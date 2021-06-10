@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/svRecipeFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.RecipeFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        android:elevation="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardMaxElevation="12dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="124dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivRecipeImageFragment"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:contentDescription="Spaghetti with onions recipe"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/vegan_dishes_1620146357" />
+
+
+            <TextView
+                android:id="@+id/tvCredits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Lisa's kitchen"
+                android:textColor="@color/design_default_color_primary_variant"
+                android:textSize="18sp"
+                android:textStyle=""
+                app:layout_constraintStart_toStartOf="@id/ivRecipeImageFragment"
+                app:layout_constraintTop_toBottomOf="@id/ivRecipeImageFragment" />
+
+            <TextView
+                android:id="@+id/tvRecipeTitleFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Spaghetti with onion sauce"
+                android:textColor="@color/design_default_color_secondary_variant"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/ivRecipeImageFragment"
+                app:layout_constraintStart_toStartOf="@id/ivRecipeImageFragment"
+                app:layout_constraintTop_toBottomOf="@id/tvCredits"
+                tools:text="Spaghetti with onion sauce" />
+
+            <TextView
+                android:id="@+id/tvTimeToPrepare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Ready in 45 minutes"
+                app:layout_constraintEnd_toEndOf="@id/tvRecipeTitleFragment"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/tvRecipeTitleFragment"
+                app:layout_constraintTop_toBottomOf="@id/tvRecipeTitleFragment" />
+
+
+            <TextView
+                android:id="@+id/tvRecipeSummaryFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="The recipe Tart Raspberry Sorbet with a Hint of Heat is ready in roughly 45 minutes and is definitely a super gluten free and vegan option for lovers of Mexican food. For 62 cents per serving, this recipe covers 2% of your daily requirements of vitamins and minerals. This recipe makes 6 servings with 40 calories, 0g of protein, and 0g of fat each. This recipe from foodandspice.blogspot.com has 39 fans. If you have raspberry jam, raspberries, juice of lime, and a few other ingredients on hand, you can make it. All things considered, we decided this recipe deserves a spoonacular score of 43%. This score is good."
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/tvRecipeTitleFragment"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@id/tvRecipeTitleFragment"
+                app:layout_constraintTop_toBottomOf="@id/tvTimeToPrepare" />
+
+
+            <TextView
+                android:id="@+id/tvIngredientsTitleFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Ingredients"
+                android:textColor="@color/design_default_color_secondary_variant"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/tvRecipeSummaryFragment"
+                app:layout_constraintStart_toStartOf="@id/tvRecipeSummaryFragment"
+                app:layout_constraintTop_toBottomOf="@id/tvRecipeSummaryFragment" />
+
+            <TextView
+                android:id="@+id/tvIngredientsDetailFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/large_text"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@id/tvRecipeTitleFragment"
+                app:layout_constraintStart_toStartOf="@id/tvRecipeTitleFragment"
+                app:layout_constraintTop_toBottomOf="@+id/tvIngredientsTitleFragment" />
+
+            <TextView
+                android:id="@+id/tvInstructionsTitleFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Instructions"
+                android:textColor="@color/design_default_color_secondary_variant"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/tvIngredientsDetailFragment"
+                app:layout_constraintStart_toStartOf="@id/tvIngredientsDetailFragment"
+                app:layout_constraintTop_toBottomOf="@id/tvIngredientsDetailFragment" />
+
+            <TextView
+                android:id="@+id/tvInstructionsDetailFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/large_text"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="@id/tvInstructionsTitleFragment"
+                app:layout_constraintStart_toStartOf="@id/tvInstructionsTitleFragment"
+                app:layout_constraintTop_toBottomOf="@id/tvInstructionsTitleFragment" />
+
+            <Button
+                android:id="@+id/btScrollToIngredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="go to&#10;ingredients"
+                app:layout_constraintBottom_toBottomOf="@id/tvInstructionsDetailFragment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvInstructionsDetailFragment" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,226 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "55896fcb9b76de1ccd2ed797774bcafa",
+    "entities": [
+      {
+        "tableName": "recipeResults",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `aggregateLikes` INTEGER NOT NULL, `analyzedInstructions` TEXT NOT NULL, `cheap` INTEGER NOT NULL, `creditsText` TEXT NOT NULL, `cuisines` TEXT NOT NULL, `dairyFree` INTEGER NOT NULL, `diets` TEXT NOT NULL, `dishTypes` TEXT NOT NULL, `gaps` TEXT NOT NULL, `glutenFree` INTEGER NOT NULL, `healthScore` REAL NOT NULL, `image` TEXT NOT NULL, `imageType` TEXT NOT NULL, `license` TEXT NOT NULL, `lowFodmap` INTEGER NOT NULL, `nutrition` TEXT NOT NULL, `occasions` TEXT NOT NULL, `pricePerServing` REAL NOT NULL, `readyInMinutes` INTEGER NOT NULL, `servings` INTEGER NOT NULL, `sourceName` TEXT NOT NULL, `sourceUrl` TEXT NOT NULL, `spoonacularScore` REAL NOT NULL, `spoonacularSourceUrl` TEXT NOT NULL, `summary` TEXT NOT NULL, `sustainable` INTEGER NOT NULL, `title` TEXT NOT NULL, `vegan` INTEGER NOT NULL, `vegetarian` INTEGER NOT NULL, `veryHealthy` INTEGER NOT NULL, `veryPopular` INTEGER NOT NULL, `weightWatcherSmartPoints` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aggregateLikes",
+            "columnName": "aggregateLikes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "analyzedInstructions",
+            "columnName": "analyzedInstructions",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cheap",
+            "columnName": "cheap",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creditsText",
+            "columnName": "creditsText",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cuisines",
+            "columnName": "cuisines",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dairyFree",
+            "columnName": "dairyFree",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "diets",
+            "columnName": "diets",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dishTypes",
+            "columnName": "dishTypes",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gaps",
+            "columnName": "gaps",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "glutenFree",
+            "columnName": "glutenFree",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "healthScore",
+            "columnName": "healthScore",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imageType",
+            "columnName": "imageType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "license",
+            "columnName": "license",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lowFodmap",
+            "columnName": "lowFodmap",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nutrition",
+            "columnName": "nutrition",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "occasions",
+            "columnName": "occasions",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pricePerServing",
+            "columnName": "pricePerServing",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "readyInMinutes",
+            "columnName": "readyInMinutes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "servings",
+            "columnName": "servings",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceName",
+            "columnName": "sourceName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceUrl",
+            "columnName": "sourceUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "spoonacularScore",
+            "columnName": "spoonacularScore",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "spoonacularSourceUrl",
+            "columnName": "spoonacularSourceUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "summary",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sustainable",
+            "columnName": "sustainable",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vegan",
+            "columnName": "vegan",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vegetarian",
+            "columnName": "vegetarian",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "veryHealthy",
+            "columnName": "veryHealthy",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "veryPopular",
+            "columnName": "veryPopular",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weightWatcherSmartPoints",
+            "columnName": "weightWatcherSmartPoints",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '55896fcb9b76de1ccd2ed797774bcafa')"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/recipeSearch2"
+        android:icon="@drawable/recipe_search"
+        android:title="recipe Search" />
+    <item
+        android:id="@+id/ingredientSearch2"
+        android:icon="@drawable/ingredient_search"
+        android:title="ingredient Search" />
+    <item
+        android:id="@+id/saves2"
+        android:icon="@drawable/ic_favorite"
+        android:title="Saved" />
+</menu>
