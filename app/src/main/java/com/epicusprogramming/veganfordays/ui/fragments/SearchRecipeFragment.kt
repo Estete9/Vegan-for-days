@@ -2,6 +2,7 @@ package com.epicusprogramming.veganfordays.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
@@ -24,6 +25,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
@@ -58,14 +60,23 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                     if (editable.toString().isEmpty()) {
                         recipeAdapter.differ.submitList(listOf())
                     }
-                    if (editable.toString().isNotEmpty()) {
-//                        recipeAdapter.differ.submitList(listOf())
-                        viewModel.searchRecipe(editable.toString())
-                    }
+//                    if (editable.toString().isNotEmpty()) {
+////                        recipeAdapter.differ.submitList(listOf())
+//                        viewModel.searchRecipe(editable.toString())
+//                    }
                 }
             }
         }
 
+        etSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                if (etSearch.text.toString().isNotEmpty()) {
+                    viewModel.searchRecipe(etSearch.text.toString())
+                    return@OnKeyListener true
+                }
+            }
+            false
+        })
 //        etSearch.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
 //
 //            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
