@@ -26,6 +26,9 @@ class RecipeViewModel(
     var searchRecipesPage = 1
     var searchRecipesResponse: SearchRecipeResponse? = null
 
+    var newSearchQuery: String? = null
+    var oldSearchQuery: String? = null
+
     fun searchRecipe(recipeOrIngredientQuery: String) = viewModelScope.launch {
         safeSearchRecipeCall(recipeOrIngredientQuery)
     }
@@ -33,10 +36,12 @@ class RecipeViewModel(
     private fun handleSearchRecipeResponse(response: Response<SearchRecipeResponse>): Resource<SearchRecipeResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                searchRecipesPage++
-                if (searchRecipesResponse == null) {
+                if (searchRecipesResponse == null || newSearchQuery != oldSearchQuery) {
+                    searchRecipesPage = 1
+                    oldSearchQuery = newSearchQuery
                     searchRecipesResponse = resultResponse
                 } else {
+                    searchRecipesPage++
                     val oldRecipes = searchRecipesResponse?.results
                     val newRecipes = resultResponse.results
 
@@ -49,6 +54,7 @@ class RecipeViewModel(
     }
 
     private suspend fun safeSearchRecipeCall(recipeOrIngredientQuery: String) {
+        newSearchQuery = recipeOrIngredientQuery
         searchRecipeLiveData.postValue(Resource.Loading())
         try {
             if (hasInternetConnection()) {

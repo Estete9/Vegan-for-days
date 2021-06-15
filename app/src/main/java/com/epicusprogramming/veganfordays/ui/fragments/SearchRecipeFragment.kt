@@ -15,11 +15,11 @@ import com.epicusprogramming.veganfordays.R
 import com.epicusprogramming.veganfordays.adapters.RecipePreviewAdapter
 import com.epicusprogramming.veganfordays.ui.RecipeViewModel
 import com.epicusprogramming.veganfordays.ui.RecipesActivity
-import com.epicusprogramming.veganfordays.ui.hideKeyboard
 import com.epicusprogramming.veganfordays.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.epicusprogramming.veganfordays.util.Constants.Companion.SEARCH_DELAY
 import com.epicusprogramming.veganfordays.util.Resource
 import kotlinx.android.synthetic.main.fragment_search_recipe.*
+import kotlinx.android.synthetic.main.item_recipe_preview.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -38,7 +38,6 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
         setupRecyclerView()
 
 
-
         recipeAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("recipe", it)
@@ -50,21 +49,51 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
         }
 
         var job: Job? = null
+
         etSearch.addTextChangedListener { editable ->
             job?.cancel()
             job = MainScope().launch {
                 delay(SEARCH_DELAY)
                 editable?.let {
+                    if (editable.toString().isEmpty()) {
+                        recipeAdapter.differ.submitList(listOf())
+                    }
                     if (editable.toString().isNotEmpty()) {
+//                        recipeAdapter.differ.submitList(listOf())
                         viewModel.searchRecipe(editable.toString())
                     }
                 }
             }
         }
 
+//        etSearch.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
+//
+//            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+//                if (etSearch.text.toString() != recipeAdapter.previousSearch && etSearch.text.toString()
+//                        .isNotEmpty()
+//                ) {
+//                    if (recipeAdapter.recipeList.isNotEmpty() && recipeAdapter.isRecipeListInitialized) {
+//                        recipeAdapter.recipeList.clear()
+//                        return@OnKeyListener true
+//                    }
+//                }
+//                if (etSearch.text.toString().isNotEmpty()) {
+//                    recipeAdapter.previousSearch = etSearch.text.toString()
+//                    viewModel.searchRecipe(etSearch.text.toString())
+//                }
+//                return@OnKeyListener true
+//            }
+//            false
+//        })
+
+//        if (recipeAdapter.recipeList.isNotEmpty() && recipeAdapter.isRecipeListInitialized) {
+//            recipeAdapter.recipeList.clear()
+//        }
         viewModel.searchRecipeLiveData.observe(viewLifecycleOwner, Observer { response ->
+            recipeAdapter.differ.submitList(emptyList())
             when (response) {
                 is Resource.Success -> {
+
                     hideProgressBar()
                     response.data?.let { recipeResponse ->
                         recipeAdapter.differ.submitList(recipeResponse.results.toList())
@@ -82,6 +111,7 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                     }
                 }
                 is Resource.Loading -> {
+//                    recipeAdapter.differ.submitList(listOf())
                     showProgressBar()
                 }
             }
@@ -109,7 +139,8 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                 isScrolling = true
             }
         }
-//pagination
+
+        //pagination
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
