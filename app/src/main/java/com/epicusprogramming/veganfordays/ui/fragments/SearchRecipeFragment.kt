@@ -1,9 +1,11 @@
 package com.epicusprogramming.veganfordays.ui.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -33,12 +35,15 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
     lateinit var recipeAdapter: RecipePreviewAdapter
 
     val TAG = "SearchRecipeFragment"
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        etSearch.clearFocus()
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as RecipesActivity).viewModel
         setupRecyclerView()
-
 
         recipeAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
@@ -72,34 +77,13 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
                 if (etSearch.text.toString().isNotEmpty()) {
                     viewModel.searchRecipe(etSearch.text.toString())
+                    val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
                     return@OnKeyListener true
                 }
             }
             false
         })
-//        etSearch.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
-//
-//            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-//                if (etSearch.text.toString() != recipeAdapter.previousSearch && etSearch.text.toString()
-//                        .isNotEmpty()
-//                ) {
-//                    if (recipeAdapter.recipeList.isNotEmpty() && recipeAdapter.isRecipeListInitialized) {
-//                        recipeAdapter.recipeList.clear()
-//                        return@OnKeyListener true
-//                    }
-//                }
-//                if (etSearch.text.toString().isNotEmpty()) {
-//                    recipeAdapter.previousSearch = etSearch.text.toString()
-//                    viewModel.searchRecipe(etSearch.text.toString())
-//                }
-//                return@OnKeyListener true
-//            }
-//            false
-//        })
-
-//        if (recipeAdapter.recipeList.isNotEmpty() && recipeAdapter.isRecipeListInitialized) {
-//            recipeAdapter.recipeList.clear()
-//        }
         viewModel.searchRecipeLiveData.observe(viewLifecycleOwner, Observer { response ->
             recipeAdapter.differ.submitList(emptyList())
             when (response) {
@@ -108,8 +92,8 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                     hideProgressBar()
                     response.data?.let { recipeResponse ->
                         recipeAdapter.differ.submitList(recipeResponse.results.toList())
-//                        val totalPages = recipeResponse.totalResults / QUERY_PAGE_SIZE + 2
-//                        isLastPage = viewModel.searchRecipesPage == totalPages
+                        val totalPages = recipeResponse.totalResults / QUERY_PAGE_SIZE + 2
+                        isLastPage = viewModel.searchRecipesPage == totalPages
 
                     }
                 }
@@ -122,12 +106,13 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                     }
                 }
                 is Resource.Loading -> {
-//                    recipeAdapter.differ.submitList(listOf())
                     showProgressBar()
                 }
             }
         })
     }
+
+
 
     private fun hideProgressBar() {
         paginationProgressBar.visibility = View.INVISIBLE
@@ -183,5 +168,6 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
             addOnScrollListener(this@SearchRecipeFragment.scrollListener)
         }
 //        itemsInList.text = recipeAdapter.itemCount.toString()
+
     }
 }
