@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.epicusprogramming.veganfordays.R
 import com.epicusprogramming.veganfordays.models.Recipe
+import kotlinx.android.synthetic.main.fragment_search_recipe.*
+import kotlinx.android.synthetic.main.fragment_search_recipe.view.*
 import kotlinx.android.synthetic.main.item_recipe_preview.view.*
 import org.jsoup.Jsoup
 
@@ -44,8 +46,6 @@ class RecipePreviewAdapter : RecyclerView.Adapter<RecipePreviewAdapter.RecipePre
     }
 
     override fun onBindViewHolder(holder: RecipePreviewViewHolder, position: Int) {
-//        recipeList = differ.currentList.toMutableList()
-//        val recipe = recipeList[position]
         val recipe = differ.currentList[position]
         holder.itemView.apply {
             Glide.with(this).load(recipe.image).into(ivRecipeImagePreview)
@@ -54,7 +54,7 @@ class RecipePreviewAdapter : RecyclerView.Adapter<RecipePreviewAdapter.RecipePre
 
             tvSummaryPreview.text = Jsoup.parse(recipe.summary).text()
 
-            setOnClickListener {
+                setOnClickListener {
                 onItemClickListener?.let { it(recipe) }
             }
         }

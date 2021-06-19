@@ -35,10 +35,6 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
     lateinit var recipeAdapter: RecipePreviewAdapter
 
     val TAG = "SearchRecipeFragment"
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        etSearch.clearFocus()
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,8 +51,8 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
             )
         }
 
+//        checks if user erased all text from editText and hides de softKeyboard
         var job: Job? = null
-
         etSearch.addTextChangedListener { editable ->
             job?.cancel()
             job = MainScope().launch {
@@ -65,35 +61,38 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                     if (editable.toString().isEmpty()) {
                         recipeAdapter.differ.submitList(listOf())
                     }
-//                    if (editable.toString().isNotEmpty()) {
-////                        recipeAdapter.differ.submitList(listOf())
-//                        viewModel.searchRecipe(editable.toString())
-//                    }
                 }
             }
         }
-
+//          uses the Search button to make the request. after clicking the button the softKeyboard disappears with InputMethodManager
         etSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
                 if (etSearch.text.toString().isNotEmpty()) {
+
                     viewModel.searchRecipe(etSearch.text.toString())
-                    val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm =
+                        context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
+                    viewModel.searchRecipesPage = 1
                     return@OnKeyListener true
                 }
             }
             false
         })
+
         viewModel.searchRecipeLiveData.observe(viewLifecycleOwner, Observer { response ->
-            recipeAdapter.differ.submitList(emptyList())
             when (response) {
                 is Resource.Success -> {
 
                     hideProgressBar()
                     response.data?.let { recipeResponse ->
+
                         recipeAdapter.differ.submitList(recipeResponse.results.toList())
-                        val totalPages = recipeResponse.totalResults / QUERY_PAGE_SIZE + 2
-                        isLastPage = viewModel.searchRecipesPage == totalPages
+//                        val totalPages = recipeResponse.totalResults / QUERY_PAGE_SIZE + 2
+//                        isLastPage = viewModel.searchRecipesPage == totalPages
+//                        if (isLastPage) {
+//                            rvSearchRecipe.setPadding(0, 0, 0, 0)
+//                        }
 
                     }
                 }
@@ -109,9 +108,10 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                     showProgressBar()
                 }
             }
-        })
-    }
 
+        })
+
+    }
 
 
     private fun hideProgressBar() {
@@ -129,12 +129,6 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
     var isScrolling = false
 
     val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                isScrolling = true
-            }
-        }
 
         //pagination
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -142,20 +136,28 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
 
             val layoutManager = recyclerView.layoutManager as LinearLayoutManager
             val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-            val totalVisibleItemCount = layoutManager.childCount
+            val visibleItemCount = layoutManager.childCount
             val totalItemCount = layoutManager.itemCount
 
-            val isNotLoadingNotLastPage = !isLoading && !isLastPage
-            val isAtLastItem = firstVisibleItemPosition + totalVisibleItemCount >= totalItemCount
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
             val shouldPaginate =
-                isNotLoadingNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
+                isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
                 viewModel.searchRecipe(etSearch.text.toString())
                 isScrolling = false
             }
         }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                isScrolling = true
+            }
+        }
+
     }
 
 
@@ -167,7 +169,6 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
 
             addOnScrollListener(this@SearchRecipeFragment.scrollListener)
         }
-//        itemsInList.text = recipeAdapter.itemCount.toString()
 
     }
 }
