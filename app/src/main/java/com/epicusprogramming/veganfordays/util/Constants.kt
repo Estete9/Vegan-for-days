@@ -9,6 +9,6 @@ class Constants {
         const val BASE_URL_COMPLEX = "https://api.spoonacular.com"
         const val SEARCH_DELAY = 500L
         const val QUERY_PAGE_SIZE = 20
-        const val APP_KEY_EDAMAM = BuildConfig.EDAMAM_API_KEY
+//        const val APP_KEY_EDAMAM = BuildConfig.EDAMAM_API_KEY
     }
 }
