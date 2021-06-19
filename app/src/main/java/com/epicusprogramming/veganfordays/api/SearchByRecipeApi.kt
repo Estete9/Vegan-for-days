@@ -1,8 +1,9 @@
 package com.epicusprogramming.veganfordays.api
 
 import com.epicusprogramming.veganfordays.models.SearchRecipeResponse
-import com.epicusprogramming.veganfordays.util.Constants.Companion.SPOONACULAR_APP_KEY
+import com.epicusprogramming.veganfordays.util.Constants.Companion.APP_KEY_SPOONACULAR
 import retrofit2.Response
+
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,6 +12,8 @@ interface SearchByRecipeApi {
     suspend fun getRecipes(
         @Query("query")
         recipeOrIngredientQuery: String,
+        @Query("offset")
+        pagination: Int = 1,
         @Query("cuisine")
         cuisine: String = "",
         @Query("excludeCuisine")
@@ -31,7 +34,11 @@ interface SearchByRecipeApi {
         addRecipeNutrition: Boolean = true,
         @Query("sort")
         sort: String = "",
+        @Query("number")
+        numberOfResults: Int = 100,
+
         @Query("apiKey")
-        apiKey: String = SPOONACULAR_APP_KEY
+        apiKey: String = APP_KEY_SPOONACULAR
+
     ): Response<SearchRecipeResponse>
 }

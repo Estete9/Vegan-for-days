@@ -12,10 +12,11 @@ import androidx.lifecycle.viewModelScope
 import com.epicusprogramming.veganfordays.RecipeApplication
 import com.epicusprogramming.veganfordays.models.SearchRecipeResponse
 import com.epicusprogramming.veganfordays.repository.RecipeRepository
+import com.epicusprogramming.veganfordays.util.Constants
 import com.epicusprogramming.veganfordays.util.Resource
 import kotlinx.coroutines.launch
+import okio.IOException
 import retrofit2.Response
-import java.io.IOException
 
 class RecipeViewModel(
     app: Application,
@@ -26,22 +27,28 @@ class RecipeViewModel(
     var searchRecipesPage = 1
     var searchRecipesResponse: SearchRecipeResponse? = null
 
+    var newSearchQuery: String? = null
+    var oldSearchQuery: String? = null
+
     fun searchRecipe(recipeOrIngredientQuery: String) = viewModelScope.launch {
         safeSearchRecipeCall(recipeOrIngredientQuery)
     }
 
+    //TODO error in pagination, it restarts the recyclerview and duplicates the search when it reaches the end of the list
     private fun handleSearchRecipeResponse(response: Response<SearchRecipeResponse>): Resource<SearchRecipeResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-                searchRecipesPage++
-                if (searchRecipesResponse == null) {
-                    searchRecipesResponse = resultResponse
-                } else {
-                    val oldRecipes = searchRecipesResponse?.results
-                    val newRecipes = resultResponse.results
-
-                    oldRecipes?.addAll(newRecipes)
-                }
+//                if (searchRecipesResponse == null || newSearchQuery != oldSearchQuery) {
+//                    searchRecipesPage = 1
+//                    oldSearchQuery = newSearchQuery
+//                    searchRecipesResponse = resultResponse
+//                } else {
+//                    searchRecipesPage += Constants.QUERY_PAGE_SIZE + 2
+//                    val oldRecipes = searchRecipesResponse?.results
+//                    val newRecipes = resultResponse.results
+//
+//                    oldRecipes?.addAll(newRecipes)
+//                }
                 return Resource.Success(searchRecipesResponse ?: resultResponse)
             }
         }
@@ -49,6 +56,7 @@ class RecipeViewModel(
     }
 
     private suspend fun safeSearchRecipeCall(recipeOrIngredientQuery: String) {
+        newSearchQuery = recipeOrIngredientQuery
         searchRecipeLiveData.postValue(Resource.Loading())
         try {
             if (hasInternetConnection()) {

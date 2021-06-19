@@ -39,7 +39,7 @@
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <TextView
-                android:id="@+id/tvTimeToMakeTVPreview"
+                android:id="@+id/tvTimeToMakePreview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -60,9 +60,9 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/tvTimeToMakeTVPreview"
-                app:layout_constraintStart_toStartOf="@id/tvTimeToMakeTVPreview"
-                app:layout_constraintTop_toBottomOf="@id/tvTimeToMakeTVPreview"
+                app:layout_constraintEnd_toEndOf="@id/tvTimeToMakePreview"
+                app:layout_constraintStart_toStartOf="@id/tvTimeToMakePreview"
+                app:layout_constraintTop_toBottomOf="@id/tvTimeToMakePreview"
                 tools:text="Spaghetti with onion sauce" />
 
 
@@ -74,7 +74,7 @@
                 android:layout_marginBottom="16dp"
                 android:textColor="@color/black"
                 android:textSize="12sp"
-                android:maxLines="6"
+                android:maxLines="5"
                 android:ellipsize="end"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tvRecipeTitlePreview"

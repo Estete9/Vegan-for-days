@@ -1,8 +1,11 @@
 package com.epicusprogramming.veganfordays.ui.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -15,15 +18,16 @@ import com.epicusprogramming.veganfordays.R
 import com.epicusprogramming.veganfordays.adapters.RecipePreviewAdapter
 import com.epicusprogramming.veganfordays.ui.RecipeViewModel
 import com.epicusprogramming.veganfordays.ui.RecipesActivity
-import com.epicusprogramming.veganfordays.ui.hideKeyboard
 import com.epicusprogramming.veganfordays.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.epicusprogramming.veganfordays.util.Constants.Companion.SEARCH_DELAY
 import com.epicusprogramming.veganfordays.util.Resource
 import kotlinx.android.synthetic.main.fragment_search_recipe.*
+import kotlinx.android.synthetic.main.item_recipe_preview.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
@@ -37,8 +41,6 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
         viewModel = (activity as RecipesActivity).viewModel
         setupRecyclerView()
 
-
-
         recipeAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("recipe", it)
@@ -49,27 +51,48 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
             )
         }
 
+//        checks if user erased all text from editText and hides de softKeyboard
         var job: Job? = null
         etSearch.addTextChangedListener { editable ->
             job?.cancel()
             job = MainScope().launch {
                 delay(SEARCH_DELAY)
                 editable?.let {
-                    if (editable.toString().isNotEmpty()) {
-                        viewModel.searchRecipe(editable.toString())
+                    if (editable.toString().isEmpty()) {
+                        recipeAdapter.differ.submitList(listOf())
                     }
                 }
             }
         }
+//          uses the Search button to make the request. after clicking the button the softKeyboard disappears with InputMethodManager
+        etSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                if (etSearch.text.toString().isNotEmpty()) {
+
+                    viewModel.searchRecipe(etSearch.text.toString())
+                    val imm =
+                        context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(etSearch.windowToken, 0)
+                    viewModel.searchRecipesPage = 1
+                    return@OnKeyListener true
+                }
+            }
+            false
+        })
 
         viewModel.searchRecipeLiveData.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
+
                     hideProgressBar()
                     response.data?.let { recipeResponse ->
+
                         recipeAdapter.differ.submitList(recipeResponse.results.toList())
 //                        val totalPages = recipeResponse.totalResults / QUERY_PAGE_SIZE + 2
 //                        isLastPage = viewModel.searchRecipesPage == totalPages
+//                        if (isLastPage) {
+//                            rvSearchRecipe.setPadding(0, 0, 0, 0)
+//                        }
 
                     }
                 }
@@ -85,8 +108,11 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                     showProgressBar()
                 }
             }
+
         })
+
     }
+
 
     private fun hideProgressBar() {
         paginationProgressBar.visibility = View.INVISIBLE
@@ -103,32 +129,35 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
     var isScrolling = false
 
     val scrollListener = object : RecyclerView.OnScrollListener() {
+
+        //pagination
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBeginning = firstVisibleItemPosition >= 0
+            val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
+            val shouldPaginate =
+                isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
+            if (shouldPaginate) {
+                viewModel.searchRecipe(etSearch.text.toString())
+                isScrolling = false
+            }
+        }
+
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScrolling = true
             }
         }
-//pagination
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
 
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-            val totalVisibleItemCount = layoutManager.childCount
-            val totalItemCount = layoutManager.itemCount
-
-            val isNotLoadingNotLastPage = !isLoading && !isLastPage
-            val isAtLastItem = firstVisibleItemPosition + totalVisibleItemCount >= totalItemCount
-            val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
-            val shouldPaginate =
-                isNotLoadingNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
-            if (shouldPaginate) {
-                viewModel.searchRecipe(etSearch.text.toString())
-                isScrolling = false
-            }
-        }
     }
 
 
@@ -140,6 +169,6 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
 
             addOnScrollListener(this@SearchRecipeFragment.scrollListener)
         }
-//        itemsInList.text = recipeAdapter.itemCount.toString()
+
     }
 }

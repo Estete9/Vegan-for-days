@@ -7,6 +7,6 @@ class RecipeRepository(
     val db: RecipeDatabase
 ) {
     suspend fun searchRecipes(recipeOrIngredientQuery: String, pageNumber: Int) =
-        RetrofitInstance.api.getRecipes(recipeOrIngredientQuery)
+        RetrofitInstance.api.getRecipes(recipeOrIngredientQuery, pageNumber)
 
 }

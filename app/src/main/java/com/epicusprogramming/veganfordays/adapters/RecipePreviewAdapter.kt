@@ -9,8 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.epicusprogramming.veganfordays.R
 import com.epicusprogramming.veganfordays.models.Recipe
+import kotlinx.android.synthetic.main.fragment_search_recipe.*
+import kotlinx.android.synthetic.main.fragment_search_recipe.view.*
 import kotlinx.android.synthetic.main.item_recipe_preview.view.*
 import org.jsoup.Jsoup
+
+val TAG = "RecipePreviewAdapter"
+
 
 class RecipePreviewAdapter : RecyclerView.Adapter<RecipePreviewAdapter.RecipePreviewViewHolder>() {
     inner class RecipePreviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -23,9 +28,12 @@ class RecipePreviewAdapter : RecyclerView.Adapter<RecipePreviewAdapter.RecipePre
         override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
             return oldItem == newItem
         }
+
     }
 
+
     val differ = AsyncListDiffer(this, differCallback)
+//    var recipeList: MutableList<Recipe> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipePreviewViewHolder {
         return RecipePreviewViewHolder(
@@ -42,12 +50,11 @@ class RecipePreviewAdapter : RecyclerView.Adapter<RecipePreviewAdapter.RecipePre
         holder.itemView.apply {
             Glide.with(this).load(recipe.image).into(ivRecipeImagePreview)
             tvRecipeTitlePreview.text = recipe.title
-            tvTimeToMakeTVPreview.text = "${recipe.readyInMinutes} minutes"
+            tvTimeToMakePreview.text = "${recipe.readyInMinutes} minutes"
 
             tvSummaryPreview.text = Jsoup.parse(recipe.summary).text()
-//                recipe.summary/*"${recipe.summary.subSequence(0, 151)}..."*/
 
-            setOnClickListener {
+                setOnClickListener {
                 onItemClickListener?.let { it(recipe) }
             }
         }
