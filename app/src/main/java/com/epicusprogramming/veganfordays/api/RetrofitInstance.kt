@@ -13,13 +13,13 @@ class RetrofitInstance {
             val client = OkHttpClient.Builder().addInterceptor(logging).build()
 
             Retrofit.Builder()
-                .baseUrl(Constants.SPOONACULAR_BASE_URL_COMPLEX)
+                .baseUrl(Constants.EDAMAM_BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
         val api by lazy {
-            retrofit.create(SearchByRecipeApi::class.java)
+            retrofit.create(SearchByRecipeApiEdamam::class.java)
         }
     }
 }

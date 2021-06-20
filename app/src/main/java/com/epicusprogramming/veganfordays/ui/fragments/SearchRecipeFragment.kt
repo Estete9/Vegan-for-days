@@ -46,7 +46,7 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                 putSerializable("recipe", it)
             }
             findNavController().navigate(
-                R.id.action_searchRecipeFragment_to_recipeFragment,
+                R.id.action_searchRecipeFragment_to_webViewRecipeFragment,
                 bundle
             )
         }
@@ -87,7 +87,7 @@ class SearchRecipeFragment : Fragment(R.layout.fragment_search_recipe) {
                     hideProgressBar()
                     response.data?.let { recipeResponse ->
 
-                        recipeAdapter.differ.submitList(recipeResponse.results.toList())
+                        recipeAdapter.differ.submitList(recipeResponse.hits.toList())
 //                        val totalPages = recipeResponse.totalResults / QUERY_PAGE_SIZE + 2
 //                        isLastPage = viewModel.searchRecipesPage == totalPages
 //                        if (isLastPage) {

@@ -10,9 +10,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.epicusprogramming.veganfordays.RecipeApplication
-import com.epicusprogramming.veganfordays.models.SearchRecipeResponse
+import com.epicusprogramming.veganfordays.modelsEdamame.EdamamSearchRecipeResponse
 import com.epicusprogramming.veganfordays.repository.RecipeRepository
-import com.epicusprogramming.veganfordays.util.Constants
 import com.epicusprogramming.veganfordays.util.Resource
 import kotlinx.coroutines.launch
 import okio.IOException
@@ -23,9 +22,10 @@ class RecipeViewModel(
     val recipeRepository: RecipeRepository
 ) : AndroidViewModel(app) {
 
-    val searchRecipeLiveData: MutableLiveData<Resource<SearchRecipeResponse>> = MutableLiveData()
+    val searchRecipeLiveData: MutableLiveData<Resource<EdamamSearchRecipeResponse>> =
+        MutableLiveData()
     var searchRecipesPage = 1
-    var searchRecipesResponse: SearchRecipeResponse? = null
+    var searchRecipesResponse: EdamamSearchRecipeResponse? = null
 
     var newSearchQuery: String? = null
     var oldSearchQuery: String? = null
@@ -35,7 +35,7 @@ class RecipeViewModel(
     }
 
     //TODO error in pagination, it restarts the recyclerview and duplicates the search when it reaches the end of the list
-    private fun handleSearchRecipeResponse(response: Response<SearchRecipeResponse>): Resource<SearchRecipeResponse> {
+    private fun handleSearchRecipeResponse(response: Response<EdamamSearchRecipeResponse>): Resource<EdamamSearchRecipeResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
 //                if (searchRecipesResponse == null || newSearchQuery != oldSearchQuery) {
@@ -61,7 +61,7 @@ class RecipeViewModel(
         try {
             if (hasInternetConnection()) {
                 val response =
-                    recipeRepository.searchRecipes(recipeOrIngredientQuery, searchRecipesPage)
+                    recipeRepository.searchRecipes(recipeOrIngredientQuery/*, searchRecipesPage*/)
                 searchRecipeLiveData.postValue(handleSearchRecipeResponse(response))
             } else {
                 searchRecipeLiveData.postValue(Resource.Error("No internet connection"))

@@ -6,7 +6,7 @@ import com.epicusprogramming.veganfordays.db.RecipeDatabase
 class RecipeRepository(
     val db: RecipeDatabase
 ) {
-    suspend fun searchRecipes(recipeOrIngredientQuery: String, pageNumber: Int) =
-        RetrofitInstance.api.getRecipes(recipeOrIngredientQuery, pageNumber)
+    suspend fun searchRecipes(recipeOrIngredientQuery: String) =
+        RetrofitInstance.api.getRecipes(recipeOrIngredientQuery)
 
 }
